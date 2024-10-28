@@ -213,6 +213,25 @@ class SlotMachine:
 
 # ------------------ Roulette Game ------------------
 
+def choose_bet_type():
+    """Display the list of bet types and allow the player to choose one."""
+    print("\nBet Types:")
+    print("1: Straight Bet (bet on a single number, 35:1 payout)")
+    print("2: Color Bet (bet on Red or Black, 1:1 payout)")
+    print("3: Odd/Even Bet (bet on Odd or Even numbers, 1:1 payout)")
+    print("4: Low/High Bet (bet on Low 1-18 or High 19-36, 1:1 payout)")
+
+    while True:
+        try:
+            choice = int(input("Choose a bet type (1-4): "))
+            if choice in [1, 2, 3, 4]:
+                return choice
+            else:
+                print("Invalid choice. Please choose a valid bet type.")
+        except ValueError:
+            print("Please enter a number between 1 and 4.")
+
+
 class RouletteGame:
     def __init__(self):
         """Initialize the Roulette game with starting chips and red/black numbers."""
@@ -236,24 +255,6 @@ class RouletteGame:
                     return bet
             except ValueError:
                 print("Please enter a valid number.")
-
-    def choose_bet_type(self):
-        """Display the list of bet types and allow the player to choose one."""
-        print("\nBet Types:")
-        print("1: Straight Bet (bet on a single number, 35:1 payout)")
-        print("2: Color Bet (bet on Red or Black, 1:1 payout)")
-        print("3: Odd/Even Bet (bet on Odd or Even numbers, 1:1 payout)")
-        print("4: Low/High Bet (bet on Low 1-18 or High 19-36, 1:1 payout)")
-
-        while True:
-            try:
-                choice = int(input("Choose a bet type (1-4): "))
-                if choice in [1, 2, 3, 4]:
-                    return choice
-                else:
-                    print("Invalid choice. Please choose a valid bet type.")
-            except ValueError:
-                print("Please enter a number between 1 and 4.")
 
     def get_bet_details(self, choice):
         """Get the specific details for the selected bet type."""
@@ -314,7 +315,7 @@ class RouletteGame:
         print("Welcome to the Roulette Game!")
         while self.chips > 0:
             bet_amount = self.place_bet()
-            bet_type = self.choose_bet_type()
+            bet_type = choose_bet_type()
             bet_details = self.get_bet_details(bet_type)
             result = self.spin_wheel()
             print(f"\nThe ball landed on: {result}")
@@ -338,6 +339,16 @@ class RouletteGame:
                     break
 
 # ------------------ Texas Hold'em Poker Game ------------------
+
+def get_card_value(card):
+    """Convert card values to numeric values for comparison."""
+    if card['value'] in ['JACK', 'QUEEN', 'KING']:
+        return 10
+    elif card['value'] == 'ACE':
+        return 11
+    else:
+        return int(card['value'])
+
 
 class TexasHoldemPoker:
     def __init__(self):
@@ -388,20 +399,11 @@ class TexasHoldemPoker:
             print(f"{player} hand: {', '.join([f'{card['value']} of {card['suit']}' for card in hand])}")
         print(f"Community cards: {', '.join([f'{card['value']} of {card['suit']}' for card in self.community_cards])}")
 
-    def get_card_value(self, card):
-        """Convert card values to numeric values for comparison."""
-        if card['value'] in ['JACK', 'QUEEN', 'KING']:
-            return 10
-        elif card['value'] == 'ACE':
-            return 11
-        else:
-            return int(card['value'])
-
     def compare_hands(self):
         """A simplified comparison of hands based on the highest card value."""
         for player, details in self.players.items():
             combined_hand = details["hand"] + self.community_cards
-            hand_values = [self.get_card_value(card) for card in combined_hand]
+            hand_values = [get_card_value(card) for card in combined_hand]
             best_hand_value = max(hand_values)
             self.players[player]["best_hand"] = best_hand_value  # Store the best hand value
 
