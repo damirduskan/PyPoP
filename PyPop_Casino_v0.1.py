@@ -132,7 +132,7 @@ class BlackjackGame:
 class SlotMachine:
     def __init__(self):
         """
-        Initialiseer de slotmachine met symbolen, hun waarden en startchips.
+        Initialize the slot machine with symbols, their values, and starting chips.
         """
         self.emojis = ["🍒", "🍋", "🍊", "🍉", "🍇", "⭐", "🔔", "🍀", "💎", "👑"]
         self.values = {
@@ -140,11 +140,11 @@ class SlotMachine:
             "🍇": 75, "⭐": 100, "🔔": 150, "🍀": 200,
             "💎": 300, "👑": 500
         }
-        self.chips = 500  # Startchips voor de speler
+        self.chips = 500  # Starting chips for the player
 
     def spin(self):
         """
-        Simuleer een draai van de slotmachine door drie willekeurige nummers op te vragen via de Random.org API.
+        Simulate a spin of the slot machine by requesting three random numbers via the Random.org API.
         """
         base_url = "https://www.random.org/integers/"
         params = {
@@ -157,12 +157,12 @@ class SlotMachine:
             random_numbers = list(map(int, response.text.strip().split()))
             return [self.emojis[number] for number in random_numbers]
         else:
-            print("Kon geen willekeurige waarden ophalen. Probeer later opnieuw.")
-            return ["❌", "❌", "❌"]  # Fallback bij fout
+            print("Could not retrieve random values. Please try again later.")
+            return ["❌", "❌", "❌"]  # Fallback in case of error
 
     def calculate_payout(self, result, bet):
         """
-        Bereken de uitbetaling op basis van het resultaat van de draai.
+        Calculate the payout based on the spin result.
         """
         if result[0] == result[1] == result[2]:
             return self.values[result[0]] * bet
@@ -171,44 +171,44 @@ class SlotMachine:
 
     def place_bet(self):
         """
-        Laat de speler een inzet plaatsen en valideer het bedrag.
+        Allow the player to place a bet and validate the amount.
         """
         while True:
-            print(f"Je hebt {self.chips} fiches.")
+            print(f"You have {self.chips} chips.")
             try:
-                bet = int(input("Plaats je inzet: "))
+                bet = int(input("Place your bet: "))
                 if bet > self.chips or bet <= 0:
-                    print("Ongeldig inzetbedrag. Probeer opnieuw.")
+                    print("Invalid bet amount. Please try again.")
                 else:
                     return bet
             except ValueError:
-                print("Voer een geldig getal in.")
+                print("Please enter a valid number.")
 
     def play(self):
         """
-        Speel de slotmachine, laat de speler inzetten en spinnen.
+        Play the slot machine, allowing the player to place bets and spin.
         """
-        print("Welkom bij de Slotmachine!")
+        print("Welcome to the Slot Machine!")
         while self.chips > 0:
             bet = self.place_bet()
             result = self.spin()
-            print(f"Resultaat: {' | '.join(result)}")
+            print(f"Result: {' | '.join(result)}")
 
             payout = self.calculate_payout(result, bet)
             if payout > 0:
-                print(f"Gefeliciteerd! Je hebt {payout} fiches gewonnen!")
+                print(f"Congratulations! You won {payout} chips!")
                 self.chips += payout
             else:
-                print("Helaas, je hebt deze keer niet gewonnen.")
+                print("Sorry, you did not win this time.")
                 self.chips -= bet
 
             if self.chips <= 0:
-                print("Je hebt geen fiches meer! Spel voorbij.")
+                print("You have no chips left! Game over.")
                 break
             else:
-                play_again = input("Wil je nog een keer draaien? (ja/nee): ").lower()
-                if play_again != 'ja':
-                    print(f"Je hebt het spel verlaten met {self.chips} fiches. Tot ziens!")
+                play_again = input("Do you want to spin again? (yes/no): ").lower()
+                if play_again != 'yes':
+                    print(f"You left the game with {self.chips} chips. Goodbye!")
                     break
 
 # ------------------ Roulette Game ------------------
