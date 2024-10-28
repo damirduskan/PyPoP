@@ -25,7 +25,9 @@ class BlackjackGame:
         return response.json()['cards']
 
     def card_value(self, card):
-        """Calculate the value of a single card (handle face cards and Ace)."""
+        """
+        Calculate the value of a single card (handle face cards and Ace).
+        """
         value = card['value']
         if value in ['JACK', 'QUEEN', 'KING']:
             return 10
