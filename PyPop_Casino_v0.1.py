@@ -6,7 +6,9 @@ import random
 
 class BlackjackGame:
     def __init__(self):
-        """Initialize the Blackjack game with a shuffled deck and initial chips."""
+        """
+        Initialize the Blackjack game with a shuffled deck and initial chips.
+        """
         self.base_url = "https://deckofcardsapi.com/api/deck/"
         self.deck_id = self.shuffle_new_deck()  # Get a new shuffled deck ID
         self.player_hand = []  # List to hold player's cards
@@ -14,13 +16,17 @@ class BlackjackGame:
         self.chips = 1000  # Starting chips for the player
 
     def shuffle_new_deck(self):
-        """Shuffle a new deck with 6 decks combined and return the deck_id."""
+        """
+        Shuffle a new deck with 6 decks combined and return the deck_id.
+        """
         response = requests.get(f"{self.base_url}new/shuffle/?deck_count=6")
         deck_data = response.json()
         return deck_data['deck_id']
 
     def draw_card(self, count=1):
-        """Draw a specified number of cards from the deck."""
+        """
+        Draw a specified number of cards from the deck.
+        """
         response = requests.get(f"{self.base_url}{self.deck_id}/draw/?count={count}")
         return response.json()['cards']
 
@@ -37,7 +43,9 @@ class BlackjackGame:
             return int(value)
 
     def calculate_hand(self, hand):
-        """Calculate the total value of a hand of cards, adjusting for Aces if necessary."""
+        """
+        Calculate the total value of a hand of cards, adjusting for Aces if necessary.
+        """
         total = sum([self.card_value(card) for card in hand])
         aces = sum(1 for card in hand if card['value'] == 'ACE')
 
