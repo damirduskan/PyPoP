@@ -56,13 +56,17 @@ class BlackjackGame:
         return total
 
     def show_hand(self, hand, owner="Player"):
-        """Display the hand of a player or dealer."""
+        """
+        Display the hand of a player or dealer.
+        """
         cards = ", ".join([f"{card['value']} of {card['suit']}" for card in hand])
         total = self.calculate_hand(hand)
         print(f"{owner}'s hand: {cards} (Total: {total})")
 
     def place_bet(self):
-        """Allow the player to place a bet and validate the amount."""
+        """
+        Allow the player to place a bet and validate the amount.
+        """
         while True:
             print(f"You have {self.chips} chips.")
             try:
@@ -75,7 +79,9 @@ class BlackjackGame:
                 print("Please enter a valid number.")
 
     def player_turn(self):
-        """Handle the player's turn to either hit or stand."""
+        """
+        Handle the player's turn to either hit or stand.
+        """
         while True:
             self.show_hand(self.player_hand, "Player")
             action = input("Do you want to 'hit' or 'stand'? ").lower()
@@ -91,12 +97,16 @@ class BlackjackGame:
                 print("Invalid action. Please choose 'hit' or 'stand'.")
 
     def dealer_turn(self):
-        """Handle the dealer's turn, hitting until the total is at least 17."""
+        """
+        Handle the dealer's turn, hitting until the total is at least 17.
+        """
         while self.calculate_hand(self.dealer_hand) < 17:
             self.dealer_hand += self.draw_card(1)
 
     def determine_winner(self, bet):
-        """Determine the winner between player and dealer and adjust chips."""
+        """
+        Determine the winner between player and dealer and adjust chips.
+        """
         player_total = self.calculate_hand(self.player_hand)
         dealer_total = self.calculate_hand(self.dealer_hand)
 
@@ -115,7 +125,9 @@ class BlackjackGame:
             print("It's a tie!")
 
     def play(self):
-        """Play the Blackjack game, allowing the player to bet and take turns."""
+        """
+        Play the Blackjack game, allowing the player to bet and take turns.
+        """
         print("Welcome to Blackjack!")
         while self.chips > 0:
             bet = self.place_bet()
@@ -224,7 +236,9 @@ class SlotMachine:
 # ------------------ Roulette Game ------------------
 
 def choose_bet_type():
-    """Display the list of bet types and allow the player to choose one."""
+    """
+    Display the list of bet types and allow the player to choose one.
+    """
     print("\nBet Types:")
     print("1: Straight Bet (bet on a single number, 35:1 payout)")
     print("2: Color Bet (bet on Red or Black, 1:1 payout)")
@@ -244,17 +258,23 @@ def choose_bet_type():
 
 class RouletteGame:
     def __init__(self):
-        """Initialize the Roulette game with starting chips and red/black numbers."""
+        """
+        Initialize the Roulette game with starting chips and red/black numbers.
+        """
         self.chips = 1000
         self.red_numbers = {1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36}
         self.black_numbers = {2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35}
 
     def spin_wheel(self):
-        """Simulate a spin of the roulette wheel."""
+        """
+        Simulate a spin of the roulette wheel.
+        """
         return random.randint(0, 36)
 
     def place_bet(self):
-        """Allow the player to place a bet and validate the amount."""
+        """
+        Allow the player to place a bet and validate the amount.
+        """
         while True:
             print(f"You have {self.chips} chips.")
             try:
@@ -267,7 +287,9 @@ class RouletteGame:
                 print("Please enter a valid number.")
 
     def get_bet_details(self, choice):
-        """Get the specific details for the selected bet type."""
+        """
+        Get the specific details for the selected bet type.
+        """
         if choice == 1:
             while True:
                 try:
@@ -301,7 +323,9 @@ class RouletteGame:
                 return self.get_bet_details(choice)
 
     def determine_payout(self, result, bet_details, bet_amount):
-        """Determine the payout based on the result and the bet placed."""
+        """
+        Determine the payout based on the result and the bet placed.
+        """
         if bet_details["type"] == "straight":
             if result == bet_details["number"]:
                 return bet_amount * 35
@@ -321,7 +345,9 @@ class RouletteGame:
         return -bet_amount
 
     def play(self):
-        """Play the Roulette game, allowing the player to place and resolve bets."""
+        """
+        Play the Roulette game, allowing the player to place and resolve bets.
+        """
         print("Welcome to the Roulette Game!")
         while self.chips > 0:
             bet_amount = self.place_bet()
@@ -351,7 +377,9 @@ class RouletteGame:
 # ------------------ Texas Hold'em Poker Game ------------------
 
 def get_card_value(card):
-    """Convert card values to numeric values for comparison."""
+    """
+    Convert card values to numeric values for comparison.
+    """
     if card['value'] in ['JACK', 'QUEEN', 'KING']:
         return 10
     elif card['value'] == 'ACE':
@@ -375,42 +403,58 @@ class TexasHoldemPoker:
         self.pot = 0  # Initialize the pot
 
     def get_new_deck(self):
-        """Get a new shuffled deck using the API."""
+        """
+        Get a new shuffled deck using the API.
+        """
         response = requests.get(f"{self.base_url}new/shuffle/?deck_count=1")
         deck_data = response.json()
         return deck_data['deck_id']
 
     def draw_cards(self, count=1):
-        """Draw a specified number of cards from the deck."""
+        """
+        Draw a specified number of cards from the deck.
+        """
         response = requests.get(f"{self.base_url}{self.deck_id}/draw/?count={count}")
         return response.json()['cards']
 
     def deal_hole_cards(self):
-        """Deal two cards to each player."""
+        """
+        Deal two cards to each player.
+        """
         for player in self.players:
             self.players[player]["hand"] = self.draw_cards(2)
 
     def deal_flop(self):
-        """Deal the Flop (3 community cards)."""
+        """
+        Deal the Flop (3 community cards).
+        """
         self.community_cards = self.draw_cards(3)
 
     def deal_turn(self):
-        """Deal the Turn (1 additional community card)."""
+        """
+        Deal the Turn (1 additional community card).
+        """
         self.community_cards += self.draw_cards(1)
 
     def deal_river(self):
-        """Deal the River (1 additional community card)."""
+        """
+        Deal the River (1 additional community card).
+        """
         self.community_cards += self.draw_cards(1)
 
     def display_cards(self):
-        """Display the players' hands and community cards."""
+        """
+        Display the players' hands and community cards.
+        """
         for player, details in self.players.items():
             hand = details["hand"]
             print(f"{player} hand: {', '.join([f'{card['value']} of {card['suit']}' for card in hand])}")
         print(f"Community cards: {', '.join([f'{card['value']} of {card['suit']}' for card in self.community_cards])}")
 
     def compare_hands(self):
-        """A simplified comparison of hands based on the highest card value."""
+        """
+        A simplified comparison of hands based on the highest card value.
+        """
         for player, details in self.players.items():
             combined_hand = details["hand"] + self.community_cards
             hand_values = [get_card_value(card) for card in combined_hand]
@@ -436,7 +480,9 @@ class TexasHoldemPoker:
         self.pot = 0  # Reset the pot after determining the winner
 
     def betting_round(self):
-        """Conduct a betting round where both players can bet, call, raise, or fold."""
+        """
+        Conduct a betting round where both players can bet, call, raise, or fold.
+        """
         # Reset current bets for both players
         for player in self.players:
             self.players[player]["current_bet"] = 0
@@ -488,7 +534,9 @@ class TexasHoldemPoker:
                     print("Invalid action. Please choose 'call', 'raise', or 'fold'.")
 
     def play(self):
-        """Play a simplified game of Texas Hold'em Poker with betting."""
+        """
+        Play a simplified game of Texas Hold'em Poker with betting.
+        """
         print("Welcome to Texas Hold'em Poker!")
 
         # Deal hole cards to players
@@ -543,7 +591,9 @@ class TexasHoldemPoker:
 # ------------------ Casino Main Menu ------------------
 
 def casino_main():
-    """Provide the main menu for the Casino app, allowing users to select games or get weather updates."""
+    """
+    Provide the main menu for the Casino app, allowing users to select games or get weather updates.
+    """
     while True:
         print("\nWelcome to the PyPop Casino!")
         print("1. Play Blackjack")
